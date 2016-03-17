@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "./utilities.h"
+#include <utilities.h>
 
-// gets next line of file
+// gets next line of file. Returns 0 when EOF is reached.
 int getLine(char line[], int lineLength, FILE *fp)
 {
   int i = 0;
@@ -27,11 +27,13 @@ int countLines(FILE *fp)
   return count;
 }
 
-//TODO: make sure all lines have the same number of characters.
+//TODO: make sure all lines have the same number of characters. This is kinda just hacked.
 int numCharsPerLine(FILE *fp)
 {
   char line[100];
-  return getLine(line, 100, fp);
+  int numChars = getLine(line, 100, fp);
+  rewind(fp);
+  return numChars-1; //subtract 1 for newline char
 }
 
 // converts each line of file into entry in an array
