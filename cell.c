@@ -11,11 +11,10 @@
 #include <utilities.h>
 #define LINE_BUF 20
 
-
+// Prints a single cell. Usefule for debugging.
 void printCell(WBCell *cell)
 {
   printf("cell:\n\tvalue: %c\n\tvisited: %d\n\tindex: [%d][%d]\n\tadjacent cells: ", cell->value, cell->visited, cell->index.row, cell->index.col);
-
   for(int i = 0; i<NUM_ADJACENT_CELLS; i++){
     cell->adjacentCells[i]==NULL ? printf("[NULL] ") : printf("[%c] ", (*(cell->adjacentCells[i])).value);
   }
@@ -29,18 +28,22 @@ void makeCell(WBCell *cell, char value, int row, int col)
   cell->index.col = col;  //set col position in matrix
   cell->value = value;    //set value
   cell->visited = 0;      //set to false
+
+  // set all adjacent cell pointers to NULL
   for(int i = 0; i<NUM_ADJACENT_CELLS; i++){
     cell->adjacentCells[i]=NULL;
   }
 }
 
 // connect the cells so that they know who their neighbors are
-void connectCells(WBCell **cells, int numCols, int numRows)
+void connectCells(WBCell **cells, int numRows, int numCols)
 {
+  // iterate through matrix of cells
   for(int i = 0; i < numRows; i++){
     for(int j = 0; j < numCols; j++){
       WBCell *cellPtr = &cells[i][j];
-      // printCell(cell);
+
+      // hookem up!
       if(cellPtr->value != '-'){
         // right/left connection
         if(j+1 < numCols && cells[i][j+1].value != '-'){
@@ -63,12 +66,11 @@ void connectCells(WBCell **cells, int numCols, int numRows)
           cells[i+1][j-1].adjacentCells[TOP_RIGHT] = cellPtr;
         }
       }
-      // printCell(cellPtr);
-      // printCell(&cells[i][j+1]);
     }
   }
 }
 
+// TODO: free cells.
 void freeCells(WBCell **cells, int numRows, int numCols)
 {
 
@@ -83,17 +85,26 @@ void freeCells(WBCell **cells, int numRows, int numCols)
  */
 WBCell **initializeCells(FILE *fp, int height, int width)
 {
+  // allocate space for cells that point to each row
   WBCell **cells = (WBCell**)malloc(height * sizeof(WBCell*));
+  if(cells == NULL){
+    fprintf(stderr, "Malloc failed in cell.c, function: initializeCells");
+    return NULL;
+  }
+
   char line[LINE_BUF];
   int rowNumber = 0;
   int numChars;
   while((numChars = getLine(line, LINE_BUF, fp)-1) > 0){
+    // allocate each space for each row.
     WBCell *cellRow = (WBCell*)malloc(numChars * sizeof(WBCell));
+    // make a row of cells
     for(int i = 0; i < numChars; i++){
       makeCell(cellRow+i, line[i], rowNumber, i);
     }
     cells[rowNumber++]=cellRow;
   }
+  // connect all of the cells together
   connectCells(cells, height, width);
   return cells;
 }

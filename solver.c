@@ -21,7 +21,7 @@ int isPrefix(char *wordSoFar, TreeNode *node)
 int isSolution(char *wordSoFar, TreeNode *node)
 {
   // printf("TODO: implement isSolution()\n");
-  return 1;
+  return strcmp(wordSoFar,"cactus")==0;
 }
 
 void recursiveSolve(TreeNode *lexTree, WBCell *cell, int solutionLen, char *solutionSoFar)
@@ -59,7 +59,7 @@ void solvePuzzle(TreeNode *lexTree, WBCell **cells, int numRows, int numCols, in
   for(int i = 0; i < numRows; i++){
     for(int j = 0; j < numCols; j++){
       WBCell *cellPtr = &cells[i][j];
-      printCell(cellPtr);
+      // printCell(cellPtr);
       // initialize solutionSoFar to be all null except for first character
       char solutionSoFar[solutionLen+1];
       for(int x = 0; x < solutionLen+1; x++){
@@ -69,7 +69,7 @@ void solvePuzzle(TreeNode *lexTree, WBCell **cells, int numRows, int numCols, in
           solutionSoFar[x]='\0';
         }
       }
-      printf("solutionSoFar: %s\n", solutionSoFar);
+      // printf("solutionSoFar: %s\n", solutionSoFar);
       // recursively solve
       if(cellPtr->value != '-') recursiveSolve(lexTree, cellPtr, solutionLen, solutionSoFar);
     }
@@ -81,8 +81,7 @@ int main(int argc, char *argv[])
   FILE *fp = fopen(argv[2], "r");
   int height = countLines(fp);
   int width = numCharsPerLine(fp);
-  printf("Height: %d\n", height);
-  printf("Width: %d\n", width);
+
 
   WBCell **cells = initializeCells(fp, height, width);
   TreeNode *lexTree = NULL;
@@ -102,5 +101,6 @@ int main(int argc, char *argv[])
   // addNode(&root, &right);
   // traverseTree(root);
   freeCells(cells, height, width);
+  freeTree(lexTree);
   return 0;
 }

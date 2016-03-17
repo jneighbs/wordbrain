@@ -12,7 +12,7 @@ typedef struct tnode{
   struct tnode *parent;
   struct tnode *left;
   struct tnode *right;
-  char * word;
+  char *word;
 } TreeNode;
 
 TreeNode buildTreeFromFile(FILE *fp);
