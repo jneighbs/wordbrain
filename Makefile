@@ -6,3 +6,6 @@ CFLAGS = -Wall -g -I$(IDIR)
 
 solver: solver.o tree.o utilities.o cell.o
 	$(CC) -o solver solver.o tree.o utilities.o cell.o $(CFLAGS)
+
+sort: sort.o utilities.o
+	$(CC) -o sort sort.o utilities.o $(CFLAGS)

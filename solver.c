@@ -12,23 +12,13 @@
 #include <tree.h>
 #include <cell.h>
 
-int isPrefix(char *wordSoFar, TreeNode *node)
-{
-  // printf("TODO: implement isPrefix()\n");
-  return 1;
-}
-
-int isSolution(char *wordSoFar, TreeNode *node)
-{
-  // printf("TODO: implement isSolution()\n");
-  return strcmp(wordSoFar,"cactus")==0;
-}
+#define LEXICON_FILENAME "./lexicons/lexicon.txt"
 
 void recursiveSolve(TreeNode *lexTree, WBCell *cell, int solutionLen, char *solutionSoFar)
 {
   // base case - if solution is of correct length and is an actual word, then print it
   if(strlen(solutionSoFar) == solutionLen){
-    if(isSolution(solutionSoFar, lexTree)){
+    if(isSolution(lexTree, solutionSoFar)){
       printf("%s\n", solutionSoFar);
     }
   // else, word isn't long enough yet. Try expanding in all directions
@@ -40,7 +30,7 @@ void recursiveSolve(TreeNode *lexTree, WBCell *cell, int solutionLen, char *solu
         solutionSoFar[newLetterIndex]=(*nextCellPtr).value;
         // if new direction is a valid prefix, mark current cell as visited,
         // and recurse on next cell with updated solution
-        if(isPrefix(solutionSoFar, lexTree)){
+        if(isPrefix(lexTree, solutionSoFar)){
           cell->visited = 1;
           recursiveSolve(lexTree, nextCellPtr, solutionLen, solutionSoFar);
         }
@@ -81,25 +71,17 @@ int main(int argc, char *argv[])
   FILE *fp = fopen(argv[2], "r");
   int height = countLines(fp);
   int width = numCharsPerLine(fp);
-
-
   WBCell **cells = initializeCells(fp, height, width);
-  TreeNode *lexTree = NULL;
-  solvePuzzle(lexTree, cells, height, width, atoi(argv[1]));
-  // int count = countLines(stdin);
-  // char *words[count];
-  // getArray(words, count, stdin);
-  // for(int i = 0; i < count; i++){
-  //   printf("%s\n", words[i]);
-  // }
-  // buildTreeFromFile(stdin);
+  fclose(fp);
+  // printCells(cells, height, width);
 
-  // TreeNode root = buildTreeFromFile(stdin);
-  // TreeNode left = {NULL, NULL, NULL, 'c'};
-  // TreeNode right = {NULL, NULL, NULL, 'r'};
-  // addNode(&root, &left);
-  // addNode(&root, &right);
-  // traverseTree(root);
+
+  FILE *lexiconFilePtr = fopen(LEXICON_FILENAME, "r");
+  TreeNode *lexTree = buildTreeFromFile(lexiconFilePtr);
+  fclose(lexiconFilePtr);
+
+  solvePuzzle(lexTree, cells, height, width, atoi(argv[1]));
+
   freeCells(cells, height, width);
   freeTree(lexTree);
   return 0;

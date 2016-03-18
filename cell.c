@@ -2,7 +2,8 @@
  * Author: Jacob Neighbors
  * Date: 3/15/16
  * Desc: A 'cell' data structure to represent each letter tile in the
- *  wordbrain game
+ *  wordbrain game. Comes with the necessary functions to initialize and
+ *  free these cells.
  */
 
 #include <stdlib.h>
@@ -10,6 +11,8 @@
 #include <cell.h>
 #include <utilities.h>
 #define LINE_BUF 20
+
+
 
 // Prints a single cell. Usefule for debugging.
 void printCell(WBCell *cell)
@@ -19,6 +22,16 @@ void printCell(WBCell *cell)
     cell->adjacentCells[i]==NULL ? printf("[NULL] ") : printf("[%c] ", (*(cell->adjacentCells[i])).value);
   }
   printf("\n");
+}
+
+// printts all cells
+void printCells(WBCell ** cells, int numRows, int numCols)
+{
+  for(int i = 0; i < numRows; i++){
+    for(int j = 0; j < numCols; j++){
+      printCell(cells[i]+j);
+    }
+  }
 }
 
 // initialize the given cell with the given values
@@ -70,10 +83,13 @@ void connectCells(WBCell **cells, int numRows, int numCols)
   }
 }
 
-// TODO: free cells.
+// TODO: double check this
 void freeCells(WBCell **cells, int numRows, int numCols)
 {
-
+  for(int i = 0; i < numRows; i++){
+      free(cells[i]);
+  }
+  free(cells);
 }
 
 /* Initializes the cells given a correctly formatted input file

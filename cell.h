@@ -13,18 +13,18 @@
 enum cellPositions {TOP_LEFT, TOP, TOP_RIGHT, RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT, LEFT};
 
 // a basic matrix position struct
-struct matrixIndex{
+typedef struct matrixIndex{
   int row;  // row i
   int col;  // column j
-} typedef cellIndex;
+} cellIndex;
 
 // the WBCell struct
-struct cell {
+typedef struct cell {
   char value;           // The character value of the cell
   int visited;          // boolean 0 or 1
   cellIndex index;      // the cells position in the matrix of cells
   struct cell *adjacentCells[NUM_ADJACENT_CELLS]; // pointer to adjacent cells
-} typedef WBCell;
+} WBCell;
 
 // initializes all of the cells according to the file
 WBCell **initializeCells(FILE *fp, int height, int width);
@@ -32,5 +32,8 @@ WBCell **initializeCells(FILE *fp, int height, int width);
 void freeCells(WBCell **cells, int numRows, int numCols);
 // prints a single cell. Usefule for debugging.
 void printCell(WBCell *cell);
+// prints all cells
+void printCells(WBCell **cells, int numRows, int numCols);
+
 
 #endif

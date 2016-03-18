@@ -13,13 +13,17 @@ typedef struct tnode{
   struct tnode *left;
   struct tnode *right;
   char *word;
+  int level;
 } TreeNode;
 
-TreeNode buildTreeFromFile(FILE *fp);
+TreeNode *buildTreeFromFile(FILE *fp);
 void printNode(TreeNode node);
 void printTree(TreeNode node);
-void traverseTree(TreeNode node);
+TreeNode *traverseTree(TreeNode *root, char *wordToTest);
+int isPrefix(TreeNode *root, char *wordToTest);
+int isSolution(TreeNode *root, char *wordToTest);
 void addNode(TreeNode *root, TreeNode *newNode);
+void freeTree(TreeNode* root);
 
 
 

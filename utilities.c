@@ -1,5 +1,13 @@
-#include <stdio.h>
 #include <utilities.h>
+#include <string.h>
+#include <ctype.h>
+
+void lowerString(char *stringToLower)
+{
+  for(int i = 0; i < strlen(stringToLower); i++){
+    stringToLower[i] = tolower(stringToLower[i]);
+  }
+}
 
 // gets next line of file. Returns 0 when EOF is reached.
 int getLine(char line[], int lineLength, FILE *fp)
