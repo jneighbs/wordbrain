@@ -1,6 +1,6 @@
 CC = cc
 IDIR = .
-CFLAGS = -Wall -g -I$(IDIR)
+CFLAGS = -Wall -g -std=c99 -I$(IDIR)
 
 # TODO: create a 'make clean' rule
 
